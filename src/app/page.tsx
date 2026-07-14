@@ -1,36 +1,76 @@
-// Temporary design-system preview. It exercises the DISPATCH tokens and
-// utilities from globals.css so the visual language can be verified early.
-// This whole page is replaced in a later phase by the auth-aware entry point.
+import { Avatar, Button, Card, Input, Select, TagPill, TextArea } from '@/components/ui';
+import { TAGS } from '@/lib/schemas';
+
+// Temporary gallery of the Phase 5 UI primitives, for visual verification.
+// Replaced by the real entry point in a later phase.
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="flex flex-col gap-4">
+      <h2 className="font-mono-ui text-xs font-bold tracking-widest text-muted uppercase">
+        {title}
+      </h2>
+      <div className="flex flex-wrap items-end gap-4">{children}</div>
+    </section>
+  );
+}
+
 export default function Home() {
   return (
-    <main className="mx-auto w-full max-w-2xl p-8">
-      <p className="font-mono-ui text-xs font-bold tracking-widest text-muted uppercase">
-        Design System · Phase 2
-      </p>
-      <h1 className="mt-3 text-5xl font-bold tracking-tight">Say it in 240.</h1>
-      <p className="mt-3 text-muted">
-        Space Grotesk for display, Space Mono for labels, on paper.
-      </p>
+    <main className="mx-auto flex w-full max-w-3xl flex-col gap-10 p-8">
+      <header>
+        <p className="font-mono-ui text-xs font-bold tracking-widest text-muted uppercase">
+          UI Primitives · Phase 5
+        </p>
+        <h1 className="mt-2 text-4xl font-bold tracking-tight">DISPATCH kit</h1>
+      </header>
 
-      {/* Accent chip with the signature 3px border + hard offset shadow. */}
-      <div className="mt-8 inline-block border-[3px] border-ink bg-accent px-4 py-2 shadow-hard-6">
-        <span className="font-mono-ui text-sm font-bold tracking-wide">◆ DISPATCH</span>
-      </div>
+      <Section title="Button">
+        <Button variant="primary">Log in →</Button>
+        <Button variant="secondary">Cancel</Button>
+        <Button variant="primary" size="sm">
+          Post
+        </Button>
+        <Button variant="ghost" size="sm">
+          Edit
+        </Button>
+        <Button disabled>Disabled</Button>
+      </Section>
 
-      {/* A surface card, and a pressable button demonstrating the .press utility. */}
-      <div className="mt-8 border-[3px] border-ink bg-surface p-6 shadow-hard-4">
-        <p className="text-sm text-muted">Tokens in use:</p>
-        <ul className="mt-2 space-y-1 text-sm">
-          <li>paper · surface · ink · muted · faint · accent</li>
-          <li>shadow-hard-2…8 · font-mono-ui · press</li>
-        </ul>
-        <button
-          type="button"
-          className="press mt-4 border-[3px] border-ink bg-accent px-5 py-2 font-mono-ui text-sm font-bold shadow-hard-4"
-        >
-          POST →
-        </button>
-      </div>
+      <Section title="Input / TextArea / Select">
+        <div className="w-64">
+          <Input placeholder="ada@dispatch.dev" />
+        </div>
+        <div className="w-64">
+          <Select defaultValue="" aria-label="User">
+            <option value="">All users</option>
+            <option value="u_ada">Ada Lovelace</option>
+          </Select>
+        </div>
+        <div className="w-full">
+          <TextArea placeholder="What's happening?" />
+        </div>
+      </Section>
+
+      <Section title="TagPill">
+        {TAGS.map((tag, i) => (
+          <TagPill key={tag} active={i === 0}>
+            {tag}
+          </TagPill>
+        ))}
+      </Section>
+
+      <Section title="Avatar">
+        <Avatar initial="A" />
+        <Avatar initial="M" tone="surface" />
+        <Avatar initial="P" size="sm" tone="surface" />
+        <Avatar initial="G" size="lg" />
+      </Section>
+
+      <Section title="Card">
+        <Card className="w-72 p-5">
+          <p className="text-sm text-muted">A surface panel with a hard shadow.</p>
+        </Card>
+      </Section>
     </main>
   );
 }
