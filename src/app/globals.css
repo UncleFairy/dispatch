@@ -1,26 +1,124 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * DISPATCH design system — a neo-brutalist spec: a single accent (#FFE600),
+ * hard 3px black borders, solid offset shadows, zero corner radius, and a
+ * Space Grotesk / Space Mono type pairing. These tokens are lifted straight
+ * from the reference design so components can refer to them by name
+ * (e.g. `bg-accent`, `text-muted`, `border-ink`).
+ */
+@theme {
+  --color-paper: #e4e4de; /* app background */
+  --color-surface: #ffffff; /* cards, inputs */
+  --color-ink: #111111; /* text + borders */
+  --color-muted: #57574f; /* secondary text */
+  --color-faint: #9a9a94; /* placeholders */
+  --color-accent: #ffe600; /* the single yellow accent */
+  --color-hairline: #eeeeee; /* subtle dividers */
+  --color-disabled: #d6d6cf;
+  --color-disabled-ink: #7a7a72;
+  --color-skeleton: #dddddd; /* loading placeholders */
+
+  /* Font families are wired to the CSS variables set by next/font in layout.tsx. */
+  --font-sans: var(--font-space-grotesk), sans-serif;
+  --font-mono: var(--font-space-mono), monospace;
+
+  --radius-none: 0;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    background: var(--color-paper);
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  input,
+  textarea,
+  select,
+  button {
+    font-family: inherit;
+  }
+  textarea::placeholder,
+  input::placeholder {
+    color: var(--color-faint);
+  }
+  /* Visible focus ring for keyboard users on this high-contrast theme. */
+  :focus-visible {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/*
+ * Recurring visual primitives. Solid offset shadows appear at many sizes in the
+ * spec; exposing them as utilities keeps component markup readable.
+ */
+@layer utilities {
+  .shadow-hard-2 {
+    box-shadow: 2px 2px 0 var(--color-ink);
+  }
+  .shadow-hard-3 {
+    box-shadow: 3px 3px 0 var(--color-ink);
+  }
+  .shadow-hard-4 {
+    box-shadow: 4px 4px 0 var(--color-ink);
+  }
+  .shadow-hard-5 {
+    box-shadow: 5px 5px 0 var(--color-ink);
+  }
+  .shadow-hard-6 {
+    box-shadow: 6px 6px 0 var(--color-ink);
+  }
+  .shadow-hard-8 {
+    box-shadow: 8px 8px 0 var(--color-ink);
+  }
+  /* Convenience for the Space Mono UI labels used throughout the spec. */
+  .font-mono-ui {
+    font-family: var(--font-mono);
+  }
+  /* Press interaction: a button sinks into its own shadow when clicked. */
+  .press:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: none !important;
+  }
+}
+
+@layer utilities {
+  @keyframes skeleton-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
+  .animate-skeleton {
+    animation: skeleton-pulse 1.2s ease-in-out infinite;
+  }
+  /* Hide the scrollbar on the mobile tag row while keeping it scrollable. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Respect users who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-skeleton {
+    animation: none;
+  }
+  .press:active:not(:disabled) {
+    transform: none;
+  }
 }
