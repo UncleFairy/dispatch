@@ -4,7 +4,7 @@ import {
   encodeCursor,
   decodeCursor,
   matchesFilters,
-} from '@/server/paginate';
+} from '@/server/messages/paginate';
 import type { MessagesQuery, StoredMessage } from '@/lib/schemas';
 
 /** Build a StoredMessage with sensible defaults; only id + createdAt matter here. */

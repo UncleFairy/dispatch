@@ -8,10 +8,10 @@ import {
   type MessagesQuery,
   type StoredMessage,
 } from '@/lib/schemas';
-import { SEED_USERS, buildSeedMessages } from '@/server/seed';
+import { SEED_USERS, buildSeedMessages } from '@/server/messages/seed';
 import { ForbiddenError, NotFoundError } from '@/server/errors';
-import type { MessageRepo, UserRepo } from '@/server/repo';
-import { selectPage } from '@/server/paginate';
+import type { MessageRepo, UserRepo } from '@/server/messages/repo';
+import { selectPage } from '@/server/messages/paginate';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DATA_FILE = path.join(DATA_DIR, 'messages.json');
