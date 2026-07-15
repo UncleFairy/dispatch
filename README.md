@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DISPATCH
 
-## Getting Started
+A short-message board. Post ≤240-character messages with a tag, filter the feed by tag / author / date, inline-edit or delete your own.
 
-First, run the development server:
+**Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · TanStack Query + Virtual · Zod · Vitest
+
+## Quick start
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open <http://localhost:3000> — you'll land on `/login`. No database, no env setup.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Log in
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+There's no sign-up. Five accounts are seeded, all sharing the password **`dispatch`**:
 
-## Learn More
+| Email                | Name         |
+| -------------------- | ------------ |
+| `ada@dispatch.dev`   | Ada Lovelace |
+| `marco@dispatch.dev` | Marco Diaz   |
+| `priya@dispatch.dev` | Priya Shah   |
+| `grace@dispatch.dev` | Grace Hopper |
+| `alan@dispatch.dev`  | Alan Turing  |
 
-To learn more about Next.js, take a look at the following resources:
+Start with **Ada** — she authors the newest messages, so you'll immediately see `EDIT`/`DELETE`, which only ever appear on your own posts.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## What to try
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Post** — the counter enforces 240; the card appears instantly (optimistic), then reconciles with the server.
+- **Filter** by tag / user / date → watch the URL change. Reload or share it: the exact view comes back.
+- **Edit / delete** your own message inline. Others' have no controls — and the API returns `403` if you try anyway.
+- **Scroll** — ~1,200 messages are seeded and the list is virtualized; `LOAD MORE` pages through them.
+- **Resize** to ~390px for the mobile layout.
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Script                    | What                        |
+| ------------------------- | --------------------------- |
+| `npm run dev`             | Dev server                  |
+| `npm run build` / `start` | Production build / serve    |
+| `npm test`                | Unit + component tests (86) |
+| `npm run typecheck`       | `tsc --noEmit`              |
+| `npm run lint` / `format` | ESLint / Prettier           |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+A pre-commit hook (husky + lint-staged) blocks commits that fail lint or typecheck.
+
+## Notes
+
+- **The backend is mocked, but real.** Data is served by actual Route Handlers (`/api/*`) over a file-backed store, seeded on first run into `data/messages.json` (git-ignored). Delete that file to reseed.
+- **Env is optional.** `.env.example` documents `SESSION_SECRET` and `SEED_PASSWORD`; both have working defaults.
+
+→ **[ARCHITECTURE.md](./ARCHITECTURE.md)** — structure, decisions, rendering strategy, and the bonus answers.
