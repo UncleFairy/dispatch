@@ -1,4 +1,11 @@
-import { MessagesPageSchema, type MessagesPage, type MessagesQuery } from '@/lib/schemas';
+import {
+  MessageSchema,
+  MessagesPageSchema,
+  type CreateMessageInput,
+  type Message,
+  type MessagesPage,
+  type MessagesQuery,
+} from '@/lib/schemas';
 
 /**
  * Typed fetch wrappers for the client. Every response is parsed through the
@@ -22,4 +29,15 @@ export async function fetchMessages(
   const res = await fetch(`/api/messages${qs ? `?${qs}` : ''}`, init);
   if (!res.ok) throw new Error(`Failed to load messages (${res.status})`);
   return MessagesPageSchema.parse(await res.json());
+}
+
+export async function createMessage(input: CreateMessageInput): Promise<Message> {
+  const res = await fetch('/api/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data?.error ?? `Failed to post message (${res.status})`);
+  return MessageSchema.parse(data.message);
 }

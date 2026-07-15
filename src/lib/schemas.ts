@@ -14,7 +14,8 @@ export const TAGS = ['PRODUCT', 'DESIGN', 'RANDOM', 'ANNOUNCE'] as const;
 export const TagSchema = z.enum(TAGS);
 export type Tag = z.infer<typeof TagSchema>;
 
-/** Maximum characters in a message body — enforced on client and server. */
+/** Message body length bounds — enforced on client and server. */
+export const MIN_BODY = 10;
 export const MAX_BODY = 240;
 
 /** A seeded account. `email` is only ever used server-side (login lookup). */
@@ -59,7 +60,7 @@ export const CreateMessageInput = z.object({
   body: z
     .string()
     .trim()
-    .min(1, 'Message cannot be empty')
+    .min(MIN_BODY, `Write at least ${MIN_BODY} characters`)
     .max(MAX_BODY, `Keep it under ${MAX_BODY} characters`),
   tag: TagSchema,
 });
@@ -71,7 +72,7 @@ export const EditMessageInput = z
     body: z
       .string()
       .trim()
-      .min(1, 'Message cannot be empty')
+      .min(MIN_BODY, `Write at least ${MIN_BODY} characters`)
       .max(MAX_BODY, `Keep it under ${MAX_BODY} characters`)
       .optional(),
     tag: TagSchema.optional(),

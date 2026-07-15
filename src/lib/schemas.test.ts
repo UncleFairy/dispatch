@@ -6,18 +6,29 @@ import {
   TagSchema,
   LoginInput,
   MAX_BODY,
+  MIN_BODY,
 } from '@/lib/schemas';
 
 describe('CreateMessageInput', () => {
   it('accepts a valid message and trims the body', () => {
-    const parsed = CreateMessageInput.parse({ body: '  hello  ', tag: 'PRODUCT' });
-    expect(parsed.body).toBe('hello');
+    const parsed = CreateMessageInput.parse({ body: '  hello there  ', tag: 'PRODUCT' });
+    expect(parsed.body).toBe('hello there');
   });
 
   it('rejects an empty (or whitespace-only) body', () => {
     expect(CreateMessageInput.safeParse({ body: '   ', tag: 'PRODUCT' }).success).toBe(
       false,
     );
+  });
+
+  it('enforces the 10-character minimum', () => {
+    expect(
+      CreateMessageInput.safeParse({ body: 'x'.repeat(MIN_BODY - 1), tag: 'DESIGN' })
+        .success,
+    ).toBe(false);
+    expect(
+      CreateMessageInput.safeParse({ body: 'x'.repeat(MIN_BODY), tag: 'DESIGN' }).success,
+    ).toBe(true);
   });
 
   it('enforces the 240-character boundary', () => {
@@ -37,7 +48,7 @@ describe('CreateMessageInput', () => {
 
 describe('EditMessageInput', () => {
   it('accepts body-only or tag-only edits', () => {
-    expect(EditMessageInput.safeParse({ body: 'updated' }).success).toBe(true);
+    expect(EditMessageInput.safeParse({ body: 'updated body' }).success).toBe(true);
     expect(EditMessageInput.safeParse({ tag: 'RANDOM' }).success).toBe(true);
   });
 

@@ -31,9 +31,11 @@ export default async function FeedPage() {
     initialPageParam: null,
   });
 
+  const publicUser = toPublicUser(user);
+
   return (
     <div className="min-h-screen bg-paper">
-      <NavBar user={toPublicUser(user)} />
+      <NavBar user={publicUser} />
       <div className="mx-auto grid max-w-[1120px] grid-cols-1 gap-8 p-6 md:grid-cols-[296px_1fr] md:p-8">
         <aside className="flex flex-col gap-6">
           <h2 className="font-mono-ui text-[13px] font-bold tracking-wide uppercase">
@@ -41,7 +43,7 @@ export default async function FeedPage() {
           </h2>
         </aside>
         <HydrationBoundary state={dehydrate(queryClient)}>
-          <FeedMain currentUserId={user.id} />
+          <FeedMain currentUser={publicUser} />
         </HydrationBoundary>
       </div>
     </div>
