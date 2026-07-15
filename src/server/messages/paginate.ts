@@ -40,6 +40,17 @@ export function isAfterCursor(
   return m.id < cur.id;
 }
 
+const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
+
+// A date-only string (from a <input type="date">, e.g. "2026-07-15") parses
+// as UTC midnight at the *start* of that day. Used as-is that makes a poor
+// upper bound — "to 2026-07-15" would exclude the entire day it names.
+// Advance it to one tick before the next day so the whole day is included.
+function toUpperBound(dateStr: string): number {
+  const t = Date.parse(dateStr);
+  return DATE_ONLY.test(dateStr) ? t + 24 * 60 * 60 * 1000 - 1 : t;
+}
+
 /** True if a message passes the tag / user / date-range filters. */
 export function matchesFilters(m: StoredMessage, query: MessagesQuery): boolean {
   if (query.tag && m.tag !== query.tag) return false;
@@ -47,7 +58,7 @@ export function matchesFilters(m: StoredMessage, query: MessagesQuery): boolean 
   if (query.from || query.to) {
     const t = Date.parse(m.createdAt);
     if (query.from && t < Date.parse(query.from)) return false;
-    if (query.to && t > Date.parse(query.to)) return false;
+    if (query.to && t > toUpperBound(query.to)) return false;
   }
   return true;
 }

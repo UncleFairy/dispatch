@@ -1,4 +1,5 @@
 import type {
+  Author,
   CreateMessageInput,
   EditMessageInput,
   Message,
@@ -29,4 +30,6 @@ export interface MessageRepo {
 export interface UserRepo {
   findByEmail(email: string): Promise<User | null>;
   findById(id: string): Promise<User | null>;
+  /** Every seeded account, for the feed's "User" filter — never includes email. */
+  list(): Promise<Author[]>;
 }

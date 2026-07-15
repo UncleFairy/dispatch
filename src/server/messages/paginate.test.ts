@@ -102,6 +102,23 @@ describe('selectPage — filters', () => {
     const { items } = selectPage(data, q({ from: at(7), to: at(9) }));
     expect(items.map((m) => m.id)).toEqual(['b', 'c', 'd']);
   });
+
+  it('a date-only "to" (from a date picker) includes the entire day, not just its midnight instant', () => {
+    const today = new Date();
+    const todayDateOnly = today.toISOString().slice(0, 10); // "YYYY-MM-DD"
+    const laterToday = msg({
+      id: 'today-afternoon',
+      createdAt: new Date(
+        Date.UTC(
+          today.getUTCFullYear(),
+          today.getUTCMonth(),
+          today.getUTCDate(),
+          18, // well past the day's UTC-midnight instant
+        ),
+      ).toISOString(),
+    });
+    expect(matchesFilters(laterToday, q({ to: todayDateOnly }))).toBe(true);
+  });
 });
 
 describe('cursor encode/decode', () => {

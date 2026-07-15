@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
 import { QueryClient, dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { NavBar } from '@/components/ui';
 import { getSessionUser, toPublicUser } from '@/server/auth';
 import { messageRepo } from '@/server/messages/repo.file';
 import { messagesKey } from '@/features/messages/queryKeys';
-import { FeedMain } from '@/features/messages/FeedMain';
+import { FeedShell } from '@/features/messages/FeedShell';
 
 export const metadata: Metadata = { title: 'Feed — DISPATCH' };
 
@@ -19,6 +20,13 @@ export const metadata: Metadata = { title: 'Feed — DISPATCH' };
  * then dehydrated into the client's cache through HydrationBoundary. The
  * client-side `useMessages` hook is keyed identically (`messagesKey({})`),
  * so it adopts this data instead of re-fetching on mount.
+ *
+ * Same frame treatment as the login page: a 3px ink border + 8px offset
+ * shadow around the whole viewport, on a white surround (the design's grey
+ * canvas behind the frame isn't a prod colour). Unlike the login page's
+ * fixed-size mockup frame, this one isn't `overflow-hidden` — the feed can
+ * run to 1000+ messages, so the frame has to grow with the page and let the
+ * window scroll rather than clipping content at one viewport's height.
  */
 export default async function FeedPage() {
   const user = await getSessionUser();
@@ -34,17 +42,20 @@ export default async function FeedPage() {
   const publicUser = toPublicUser(user);
 
   return (
-    <div className="min-h-screen bg-paper">
-      <NavBar user={publicUser} />
-      <div className="mx-auto grid max-w-[1120px] grid-cols-1 gap-8 p-6 md:grid-cols-[296px_1fr] md:p-8">
-        <aside className="flex flex-col gap-6">
-          <h2 className="font-mono-ui text-[13px] font-bold tracking-wide uppercase">
-            Filters
-          </h2>
-        </aside>
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <FeedMain currentUser={publicUser} />
-        </HydrationBoundary>
+    <div className="flex min-h-screen w-full bg-surface p-3">
+      <div className="flex w-full flex-col border-[3px] border-ink bg-paper shadow-hard-8">
+        <NavBar user={publicUser} />
+        <div className="mx-auto grid w-full max-w-[1120px] grid-cols-1 gap-8 p-6 md:grid-cols-[296px_1fr] md:p-8">
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            {/* useSearchParams (in useFilters) requires a Suspense boundary. A
+                filtered URL still paints instantly: the prefetch above only
+                ever matches the unfiltered key, so anything else just fetches
+                client-side like any other Query cache miss. */}
+            <Suspense fallback={null}>
+              <FeedShell currentUser={publicUser} />
+            </Suspense>
+          </HydrationBoundary>
+        </div>
       </div>
     </div>
   );

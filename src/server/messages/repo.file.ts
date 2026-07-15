@@ -145,4 +145,12 @@ export const userRepo: UserRepo = {
   async findById(id: string) {
     return usersById.get(id) ?? null;
   },
+  async list() {
+    return SEED_USERS.map((u) => ({
+      id: u.id,
+      name: u.name,
+      handle: u.handle,
+      initial: u.initial,
+    }));
+  },
 };

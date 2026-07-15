@@ -1,6 +1,8 @@
 import {
+  AuthorSchema,
   MessageSchema,
   MessagesPageSchema,
+  type Author,
   type CreateMessageInput,
   type EditMessageInput,
   type Message,
@@ -63,4 +65,11 @@ export async function deleteMessage(id: string): Promise<void> {
     const data = await res.json().catch(() => ({}));
     throw new Error(data?.error ?? `Failed to delete message (${res.status})`);
   }
+}
+
+export async function fetchUsers(): Promise<Author[]> {
+  const res = await fetch('/api/users');
+  if (!res.ok) throw new Error(`Failed to load users (${res.status})`);
+  const data = await res.json();
+  return AuthorSchema.array().parse(data.users);
 }
