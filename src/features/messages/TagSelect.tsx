@@ -50,7 +50,9 @@ export function TagSelect({
       >
         <span className="hidden text-muted md:inline">Tag:</span>
         <span>{value}</span>
-        <span aria-hidden>▾</span>
+        <span aria-hidden className="ml-auto">
+          ▾
+        </span>
       </button>
 
       {open && (

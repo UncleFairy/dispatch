@@ -13,7 +13,9 @@ import { ForbiddenError, NotFoundError } from '@/server/errors';
 import type { MessageRepo, UserRepo } from '@/server/messages/repo';
 import { selectPage } from '@/server/messages/paginate';
 
-const DATA_DIR = path.join(process.cwd(), 'data');
+// Overridable so tests can point the store at a throwaway directory instead
+// of the real data/messages.json.
+const DATA_DIR = process.env.DISPATCH_DATA_DIR ?? path.join(process.cwd(), 'data');
 const DATA_FILE = path.join(DATA_DIR, 'messages.json');
 
 const usersById = new Map(SEED_USERS.map((u) => [u.id, u]));
