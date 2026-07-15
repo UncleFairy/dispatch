@@ -45,7 +45,7 @@ export default async function FeedPage() {
     <div className="flex min-h-screen w-full bg-surface p-3">
       <div className="flex w-full flex-col border-[3px] border-ink bg-paper shadow-hard-8">
         <NavBar user={publicUser} />
-        <div className="mx-auto grid w-full max-w-[1120px] grid-cols-1 gap-8 p-6 md:grid-cols-[296px_1fr] md:p-8">
+        <div className="mx-auto grid w-full max-w-[1120px] flex-1 grid-cols-1 gap-8 p-6 md:grid-cols-[296px_1fr] md:p-8">
           <HydrationBoundary state={dehydrate(queryClient)}>
             {/* useSearchParams (in useFilters) requires a Suspense boundary. A
                 filtered URL still paints instantly: the prefetch above only

@@ -111,6 +111,16 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+  /* The empty-state card's diagonal hazard-stripe background (design 03). */
+  .bg-empty-stripes {
+    background: repeating-linear-gradient(
+      45deg,
+      #edede7,
+      #edede7 10px,
+      var(--color-paper) 10px,
+      var(--color-paper) 20px
+    );
+  }
 }
 
 /* Respect users who prefer reduced motion. */
