@@ -46,9 +46,9 @@ export function TagSelect({
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
-        className="press inline-flex h-[38px] w-[140px] items-center gap-1.5 border-2 border-ink bg-surface px-3 font-mono-ui text-xs font-bold uppercase"
+        className="press inline-flex h-8 w-auto items-center gap-1.5 border-2 border-ink bg-surface px-3 font-mono-ui text-[11px] font-bold uppercase md:h-[38px] md:w-[140px] md:text-xs"
       >
-        <span className="text-muted">Tag:</span>
+        <span className="hidden text-muted md:inline">Tag:</span>
         <span>{value}</span>
         <span aria-hidden>▾</span>
       </button>

@@ -47,7 +47,7 @@ export function Composer({ currentUser }: { currentUser: Author }) {
       : null);
 
   return (
-    <Card className="p-[18px]">
+    <Card shadow="none" className="p-3.5 shadow-hard-4 md:p-[18px] md:shadow-hard-6">
       <form onSubmit={onSubmit}>
         <textarea
           value={body}
@@ -56,7 +56,7 @@ export function Composer({ currentUser }: { currentUser: Author }) {
           rows={2}
           aria-label="New message"
           aria-invalid={overLimit || undefined}
-          className="w-full resize-none border-none bg-transparent text-base leading-6 outline-none"
+          className="w-full resize-none border-none bg-transparent text-[15px] leading-6 outline-none md:text-base"
         />
 
         <div className="mt-3.5 flex items-center justify-between border-t-2 border-hairline pt-3.5">
@@ -74,7 +74,7 @@ export function Composer({ currentUser }: { currentUser: Author }) {
             <button
               type="submit"
               aria-busy={isPending}
-              className="press inline-flex h-[42px] items-center justify-center border-[3px] border-ink bg-accent px-[22px] font-mono-ui text-sm font-bold uppercase shadow-hard-3"
+              className="press inline-flex h-9 items-center justify-center border-[2.5px] border-ink bg-accent px-4 font-mono-ui text-[13px] font-bold uppercase shadow-hard-2 md:h-[42px] md:border-[3px] md:px-[22px] md:text-sm md:shadow-hard-3"
             >
               {isPending ? 'Posting…' : 'Post'}
             </button>

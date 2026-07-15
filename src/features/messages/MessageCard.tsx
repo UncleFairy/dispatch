@@ -75,7 +75,7 @@ export function MessageCard({
 
   if (isEditing) {
     return (
-      <Card className="p-[18px]">
+      <Card shadow="none" className="p-3.5 md:p-[18px]">
         <form onSubmit={onSave}>
           <textarea
             value={body}
@@ -87,7 +87,7 @@ export function MessageCard({
             rows={2}
             aria-label="Edit message"
             aria-invalid={overLimit || undefined}
-            className="w-full resize-none border-none bg-transparent text-base leading-6 outline-none"
+            className="w-full resize-none border-none bg-transparent text-[15px] leading-6 outline-none md:text-base"
           />
 
           <div className="mt-3.5 flex items-center justify-between border-t-2 border-hairline pt-3.5">
@@ -130,35 +130,50 @@ export function MessageCard({
   }
 
   return (
-    <Card className="p-[18px]">
+    <Card shadow="none" className="p-3.5 md:p-[18px]">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <Avatar initial={message.author.initial} size="md" />
+        <div className="flex items-center gap-2 md:gap-2.5">
+          <Avatar
+            initial={message.author.initial}
+            size="md"
+            className="h-8 w-8 text-sm md:h-[38px] md:w-[38px] md:text-base"
+          />
           <div>
-            <p className="text-[15px] leading-tight font-bold">{message.author.name}</p>
-            <p className="text-xs leading-tight text-muted">@{message.author.handle}</p>
+            <p className="hidden text-[15px] leading-tight font-bold md:block">
+              {message.author.name}
+            </p>
+            <p className="text-sm leading-tight font-bold text-ink md:text-xs md:font-normal md:text-muted">
+              @{message.author.handle}
+            </p>
           </div>
         </div>
         <time
           dateTime={message.createdAt}
           title={absoluteTime(message.createdAt)}
-          className="shrink-0 text-xs text-muted"
+          className="shrink-0 text-[11px] text-muted md:text-xs"
         >
           {relativeTime(message.createdAt)}
           {message.edited && ' · edited'}
         </time>
       </div>
 
-      <p className="mt-4 text-base leading-6 break-words">{message.body}</p>
+      <p className="mt-2.5 text-sm leading-snug break-words md:mt-3.5 md:text-base md:leading-6">
+        {message.body}
+      </p>
 
-      <div className="mt-4 flex items-center justify-between">
-        <TagPill active>{message.tag}</TagPill>
+      <div className="mt-3 flex items-center justify-between md:mt-4">
+        <TagPill
+          active
+          className="px-2 py-[3px] text-[11px] md:px-2.5 md:py-1 md:text-xs"
+        >
+          {message.tag}
+        </TagPill>
         {isOwn && (
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-1.5 md:gap-2.5">
             <button
               type="button"
               onClick={startEditing}
-              className="press border-2 border-ink bg-surface px-3 py-1.5 font-mono-ui text-xs font-bold uppercase"
+              className="press border-2 border-ink bg-surface px-2 py-1 font-mono-ui text-[11px] font-bold uppercase md:px-3 md:py-1.5 md:text-xs"
             >
               Edit
             </button>
@@ -168,11 +183,20 @@ export function MessageCard({
               onBlur={() => setConfirmingDelete(false)}
               aria-busy={isDeleting}
               className={cn(
-                'press border-2 border-ink px-3 py-1.5 font-mono-ui text-xs font-bold uppercase',
+                'press border-2 border-ink px-2 py-1 font-mono-ui text-[11px] font-bold uppercase md:px-3 md:py-1.5 md:text-xs',
                 confirmingDelete ? 'bg-accent' : 'bg-surface',
               )}
             >
-              {isDeleting ? 'Deleting…' : confirmingDelete ? 'Confirm?' : 'Delete'}
+              {isDeleting ? (
+                'Deleting…'
+              ) : confirmingDelete ? (
+                'Confirm?'
+              ) : (
+                <>
+                  <span className="md:hidden">Del</span>
+                  <span className="hidden md:inline">Delete</span>
+                </>
+              )}
             </button>
           </div>
         )}

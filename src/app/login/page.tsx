@@ -26,8 +26,10 @@ export default async function LoginPage({
     <div className="flex min-h-screen w-full bg-surface p-3">
       <div className="flex w-full flex-col overflow-hidden border-[3px] border-ink shadow-hard-8 md:flex-row">
         {/* Brand panel */}
-        <div className="flex flex-col border-b-[3px] border-ink bg-accent px-7 py-8 md:w-[45%] md:border-r-[3px] md:border-b-0 md:px-14 md:py-14">
-          <div className="font-mono-ui text-sm tracking-[0.12em]">◆ DISPATCH</div>
+        <div className="flex flex-col border-b-[3px] border-ink bg-accent px-7 pt-8 pb-10 md:w-[45%] md:border-r-[3px] md:border-b-0 md:p-14">
+          <div className="font-mono-ui text-[13px] tracking-[0.12em] md:text-sm">
+            ◆ DISPATCH
+          </div>
           <div className="md:flex md:flex-1 md:flex-col md:justify-center">
             <h1 className="mt-9 text-[52px] leading-[0.95] font-bold tracking-[-0.03em] md:mt-0 md:text-[88px] md:tracking-[-0.04em]">
               Say it in
@@ -46,7 +48,9 @@ export default async function LoginPage({
             <h2 className="text-[26px] font-bold tracking-[-0.02em] md:text-3xl">
               Log in
             </h2>
-            <p className="mt-1.5 text-sm text-muted">Use a seeded account to continue.</p>
+            <p className="mt-1.5 hidden text-[13px] text-muted md:block">
+              Use a seeded account to continue.
+            </p>
             <LoginForm next={next} />
           </div>
         </div>

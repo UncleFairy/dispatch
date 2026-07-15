@@ -21,13 +21,17 @@ export function NavBar({ user }: { user: Author }) {
   }
 
   return (
-    <div className="flex h-[72px] items-center justify-between border-b-[3px] border-ink bg-surface px-6 md:px-8">
+    <div className="flex h-[60px] items-center justify-between border-b-[3px] border-ink bg-surface px-[18px] md:h-[72px] md:px-8">
       <span className="font-mono-ui text-lg font-bold tracking-tight md:text-[22px]">
         ◆ DISPATCH
       </span>
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2.5">
-          <Avatar initial={user.initial} size="sm" className="h-[34px] w-[34px]" />
+          <Avatar
+            initial={user.initial}
+            size="sm"
+            className="h-8 w-8 md:h-[34px] md:w-[34px]"
+          />
           <span className="hidden text-sm sm:inline">@{user.handle}</span>
         </div>
         <button

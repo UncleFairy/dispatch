@@ -51,11 +51,11 @@ export function LoginForm({ next }: { next?: string }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="mt-8" noValidate>
+    <form onSubmit={onSubmit} className="mt-6 md:mt-8" noValidate>
       <div>
         <label
           htmlFor="email"
-          className="mb-2 block font-mono-ui text-xs font-bold tracking-wide uppercase"
+          className="mb-2 block font-mono-ui text-[11px] font-bold tracking-[0.08em] uppercase md:text-xs"
         >
           Email
         </label>
@@ -66,7 +66,7 @@ export function LoginForm({ next }: { next?: string }) {
           placeholder="ada@dispatch.dev"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="h-[52px]"
+          className="h-[50px] md:h-[52px]"
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? 'login-error' : undefined}
           required
@@ -74,10 +74,10 @@ export function LoginForm({ next }: { next?: string }) {
         />
       </div>
 
-      <div className="mt-5">
+      <div className="mt-[18px] md:mt-5">
         <label
           htmlFor="password"
-          className="mb-2 block font-mono-ui text-xs font-bold tracking-wide uppercase"
+          className="mb-2 block font-mono-ui text-[11px] font-bold tracking-[0.08em] uppercase md:text-xs"
         >
           Password
         </label>
@@ -88,7 +88,7 @@ export function LoginForm({ next }: { next?: string }) {
           placeholder="••••••••"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="h-[52px]"
+          className="h-[50px] md:h-[52px]"
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? 'login-error' : undefined}
           required
@@ -108,7 +108,7 @@ export function LoginForm({ next }: { next?: string }) {
       <Button
         type="submit"
         size="lg"
-        className="mt-8 w-full"
+        className="mt-7 h-[54px] w-full md:mt-8 md:h-14"
         disabled={submitting}
         aria-busy={submitting}
       >
