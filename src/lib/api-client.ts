@@ -2,6 +2,7 @@ import {
   MessageSchema,
   MessagesPageSchema,
   type CreateMessageInput,
+  type EditMessageInput,
   type Message,
   type MessagesPage,
   type MessagesQuery,
@@ -40,4 +41,26 @@ export async function createMessage(input: CreateMessageInput): Promise<Message>
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data?.error ?? `Failed to post message (${res.status})`);
   return MessageSchema.parse(data.message);
+}
+
+export async function updateMessage(
+  id: string,
+  input: EditMessageInput,
+): Promise<Message> {
+  const res = await fetch(`/api/messages/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data?.error ?? `Failed to save changes (${res.status})`);
+  return MessageSchema.parse(data.message);
+}
+
+export async function deleteMessage(id: string): Promise<void> {
+  const res = await fetch(`/api/messages/${id}`, { method: 'DELETE' });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data?.error ?? `Failed to delete message (${res.status})`);
+  }
 }

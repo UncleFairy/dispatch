@@ -1,6 +1,10 @@
 'use client';
 
 import { useMessages } from '@/features/messages/useMessages';
+import {
+  useUpdateMessage,
+  useDeleteMessage,
+} from '@/features/messages/useMessageMutations';
 import { MessageList } from '@/features/messages/MessageList';
 import { Composer } from '@/features/messages/Composer';
 import type { Author } from '@/lib/schemas';
@@ -13,6 +17,9 @@ export function FeedMain({ currentUser }: { currentUser: Author }) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useMessages({});
   const items = data?.pages.flatMap((page) => page.items) ?? [];
 
+  const updateMutation = useUpdateMessage();
+  const deleteMutation = useDeleteMessage();
+
   return (
     <main className="flex min-w-0 flex-col gap-5">
       <Composer currentUser={currentUser} />
@@ -22,6 +29,10 @@ export function FeedMain({ currentUser }: { currentUser: Author }) {
         hasNextPage={hasNextPage}
         isFetchingNextPage={isFetchingNextPage}
         onLoadMore={() => fetchNextPage()}
+        onUpdate={(id, input, options) => updateMutation.mutate({ id, input }, options)}
+        updatingId={updateMutation.isPending ? updateMutation.variables?.id : undefined}
+        onDelete={(id) => deleteMutation.mutate(id)}
+        deletingId={deleteMutation.isPending ? deleteMutation.variables : undefined}
       />
     </main>
   );

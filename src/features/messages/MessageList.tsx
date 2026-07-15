@@ -3,7 +3,7 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
 import { MessageCard } from '@/features/messages/MessageCard';
-import type { Message } from '@/lib/schemas';
+import type { EditMessageInput, Message } from '@/lib/schemas';
 
 // Rough average card height (body text varies 1-3 lines); corrected per-row
 // once each card is actually measured, so this only affects the very first
@@ -23,12 +23,24 @@ export function MessageList({
   hasNextPage,
   isFetchingNextPage,
   onLoadMore,
+  onUpdate,
+  updatingId,
+  onDelete,
+  deletingId,
 }: {
   messages: Message[];
   currentUserId: string;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   onLoadMore: () => void;
+  onUpdate?: (
+    id: string,
+    input: EditMessageInput,
+    options?: { onSuccess?: () => void },
+  ) => void;
+  updatingId?: string;
+  onDelete?: (id: string) => void;
+  deletingId?: string;
 }) {
   const listRef = useRef<HTMLDivElement>(null);
   // Refs can't be read during render, so the list's offset from the top of
@@ -65,7 +77,18 @@ export function MessageList({
                 transform: `translateY(${row.start - virtualizer.options.scrollMargin}px)`,
               }}
             >
-              <MessageCard message={message} isOwn={message.authorId === currentUserId} />
+              <MessageCard
+                message={message}
+                isOwn={message.authorId === currentUserId}
+                onUpdate={
+                  onUpdate
+                    ? (input, options) => onUpdate(message.id, input, options)
+                    : undefined
+                }
+                isUpdating={updatingId === message.id}
+                onDelete={onDelete ? () => onDelete(message.id) : undefined}
+                isDeleting={deletingId === message.id}
+              />
             </div>
           );
         })}
