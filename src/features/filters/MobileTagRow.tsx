@@ -31,7 +31,7 @@ export function MobileTagRow({
 
   return (
     <div className="flex flex-col gap-3 md:hidden">
-      <div className="flex items-center gap-2 overflow-x-auto">
+      <div className="flex flex-wrap items-center gap-2 overflow-x-auto">
         {TAGS.map((tag) => (
           <button
             key={tag}
@@ -52,7 +52,7 @@ export function MobileTagRow({
           onClick={() => setAdvancedOpen((o) => !o)}
           aria-expanded={advancedOpen}
           aria-label="More filters"
-          className="ml-auto flex h-8 w-9 shrink-0 items-center justify-center border-[2.5px] border-ink bg-surface font-mono-ui"
+          className="flex h-8 w-9 shrink-0 items-center justify-center border-[2.5px] border-ink bg-surface font-mono-ui min-[424px]:ml-auto"
         >
           ⚙
         </button>
