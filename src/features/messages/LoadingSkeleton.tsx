@@ -23,7 +23,7 @@ function SkeletonCard() {
  */
 export function LoadingSkeleton({ count = 3 }: { count?: number }) {
   return (
-    <div className="flex flex-col gap-5" role="presentation" aria-hidden="true">
+    <div className="flex flex-col flex-1 gap-5" role="presentation" aria-hidden="true">
       {Array.from({ length: count }, (_, i) => (
         <SkeletonCard key={i} />
       ))}

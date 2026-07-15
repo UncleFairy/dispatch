@@ -48,29 +48,23 @@ export function FeedMain({
         clear={clear}
         hasActiveFilters={hasActiveFilters}
       />
-      <section aria-busy={isLoading}>
-        {isLoading ? (
-          <LoadingSkeleton />
-        ) : items.length === 0 ? (
-          <EmptyState />
-        ) : (
-          <MessageList
-            messages={items}
-            currentUserId={currentUser.id}
-            hasNextPage={hasNextPage}
-            isFetchingNextPage={isFetchingNextPage}
-            onLoadMore={() => fetchNextPage()}
-            onUpdate={(id, input, options) =>
-              updateMutation.mutate({ id, input }, options)
-            }
-            updatingId={
-              updateMutation.isPending ? updateMutation.variables?.id : undefined
-            }
-            onDelete={(id) => deleteMutation.mutate(id)}
-            deletingId={deleteMutation.isPending ? deleteMutation.variables : undefined}
-          />
-        )}
-      </section>
+      {isLoading ? (
+        <LoadingSkeleton />
+      ) : items.length === 0 ? (
+        <EmptyState />
+      ) : (
+        <MessageList
+          messages={items}
+          currentUserId={currentUser.id}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          onLoadMore={() => fetchNextPage()}
+          onUpdate={(id, input, options) => updateMutation.mutate({ id, input }, options)}
+          updatingId={updateMutation.isPending ? updateMutation.variables?.id : undefined}
+          onDelete={(id) => deleteMutation.mutate(id)}
+          deletingId={deleteMutation.isPending ? deleteMutation.variables : undefined}
+        />
+      )}
     </main>
   );
 }
