@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Space_Grotesk, Space_Mono } from 'next/font/google';
+import { Providers } from './providers';
 import './globals.css';
 
 // Self-hosted by next/font at build time — no external requests at runtime and
@@ -30,7 +31,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       className={`${spaceGrotesk.variable} ${spaceMono.variable} min-h-full`}
     >
-      <body className="flex min-h-screen flex-col">{children}</body>
+      <body className="flex min-h-screen flex-col">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

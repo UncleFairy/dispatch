@@ -13,7 +13,7 @@ export type AvatarProps = {
 
 const sizes = {
   sm: 'h-8 w-8 text-sm',
-  md: 'h-10 w-10 text-base',
+  md: 'h-[38px] w-[38px] text-base',
   lg: 'h-12 w-12 text-lg',
 } as const;
 
@@ -27,7 +27,7 @@ export function Avatar({
     <span
       aria-hidden
       className={cn(
-        'inline-flex items-center justify-center border-[2.5px] border-ink font-mono-ui font-bold',
+        'inline-flex items-center justify-center border-2 border-ink font-mono-ui font-bold',
         sizes[size],
         tone === 'accent' ? 'bg-accent' : 'bg-surface',
         className,
